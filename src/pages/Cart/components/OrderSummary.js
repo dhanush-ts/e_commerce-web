@@ -13,8 +13,12 @@ export const OrderSummary = () => {
 
         useEffect(() => {
             async function user() {
+              try{
                 const data = await GetUser();
-                setUserData(data);
+                setUserData(data);    
+            }catch(error){
+                console.log(error);
+            }
             };
             user();
         } ,[])

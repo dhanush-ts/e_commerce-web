@@ -8,8 +8,12 @@ export const DropdownLoggedIn = ({setDropdown}) => {
 
     useEffect(() => {
         async function user() {
-            const data = await GetUser();
-            setUserData(data)
+            try{
+                const data = await GetUser();
+                setUserData(data)    
+            }catch(error){
+                console.log(error);
+            }
         };
         user();
     } ,[]);

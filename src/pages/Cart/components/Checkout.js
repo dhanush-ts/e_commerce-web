@@ -15,8 +15,12 @@ export const Checkout = ({setCheckout}) => {
 
     useEffect(() => {
         async function user() {
-            const data = await GetUser();
-            setUserData(data);
+            try{
+                const data = await GetUser();
+                setUserData(data);
+            }catch(error){
+                console.log(error);
+            }
         };
         user();
     } ,[])
@@ -33,9 +37,15 @@ export const Checkout = ({setCheckout}) => {
             id: userData.id
         }
     }
+    try{
     CreateOrder(order);
     clearCart();
     navi("/summary");
+    }
+    catch(error){
+        console.log(error)
+    }
+    
 }
 
   return (

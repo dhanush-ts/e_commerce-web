@@ -14,8 +14,13 @@ export const ProductDetail = () => {
   
   useEffect(() => {
     async function fetchProducts(){
-      const data = await ProductDetails(id);
-      setProduct(data);
+      try{
+        const data = await ProductDetails(id);
+        setProduct(data);
+      }catch(error){
+        console.log(error);
+      }
+
     }
     fetchProducts();
   }, [id]);

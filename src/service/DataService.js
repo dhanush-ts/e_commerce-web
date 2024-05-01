@@ -5,7 +5,9 @@ export async function GetUser(){
         method:"GET",
         headers: {"Content-Type":"application/json", "Authorization": `Bearer ${token}`}
     })
-
+    if(!response.ok){
+        throw response.statusText;
+    }
     const data = await response.json();
     return data;
 }
@@ -17,6 +19,9 @@ export async function GetUserOrders(){
         method: "GET",
         headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}` }
     });
+    if(!response.ok){
+        throw response.statusText;
+    }
     const data = await response.json()
 
     return data;
@@ -30,7 +35,7 @@ export async function CreateOrder(OrderDetails){
         body: JSON.stringify(OrderDetails)
     });
     if(!response.ok){
-        throw new Error("Error occoured")
+        throw response.statusText;
     }
     const data = await response.json()
     return data;

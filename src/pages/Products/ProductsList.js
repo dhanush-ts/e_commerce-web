@@ -16,9 +16,14 @@ export const ProductsList = () => {
 
   useEffect(() => {
     async function fetchProducts(){
-      const data = await ProductsLists(searchTerm);
+      try{
+        const data = await ProductsLists(searchTerm);
+        initialProductList(data);
+      }
+      catch(error){
+        console.log(error);
+      }
       
-      initialProductList(data);
     }
     fetchProducts();
   }, [searchTerm]);

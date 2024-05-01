@@ -9,8 +9,12 @@ export const DashbaordPage = () => {
 
     useEffect(() => {
         async function GetOrders(){
+          try{
             const result = await GetUserOrders();
             setData(result);
+        }catch(error){
+            console.log(error);
+        }
         }
         GetOrders()
     },[] )

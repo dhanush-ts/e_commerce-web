@@ -7,8 +7,12 @@ export const FeaturedProducts = () => {
 
   useEffect(() => {
     async function fetchProducts(){
+    try{
       const data = await Featured()
       setProducts(data);
+    } catch(error){
+      console.log(error)
+    }
     }
     fetchProducts();
   }, [])
