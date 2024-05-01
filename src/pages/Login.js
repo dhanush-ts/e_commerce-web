@@ -1,13 +1,11 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { UseCredentials } from "../context/LoginConext";
 
 export const Login = () => {
   const navigate = useNavigate();
   const email = useRef();
   const password = useRef();
-  const { LoginChange } = UseCredentials();
 
   async function handleLogin(event){
     event.preventDefault();
@@ -27,8 +25,8 @@ export const Login = () => {
     if(data.accessToken){
       sessionStorage.setItem("token", JSON.stringify(data.accessToken));
       sessionStorage.setItem("cbid", JSON.stringify(data.user.id));
-      LoginChange(data.user);
-      console.log(data.user);
+      sessionStorage.setItem("name", JSON.stringify(data.user.name))
+      sessionStorage.setItem("email", JSON.stringify(data.user.email))
     }
   }
 

@@ -1,14 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { UseCredentials } from "../../context/LoginConext";
 
 export const DropdownLoggedIn = ({setDropdown}) => {
     const navigate = useNavigate();
-    const { name, Logout } = UseCredentials();
-    
+    const name = JSON.parse(sessionStorage.getItem("name"))
+
     function handleLogout(){
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("cbid");
-        Logout();
         setDropdown(false);
         navigate("/");
     }
