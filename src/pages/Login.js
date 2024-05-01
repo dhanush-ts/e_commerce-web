@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { Loginer } from "../service/AuthService"
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -13,21 +14,8 @@ export const Login = () => {
       email: email.current.value,
       password: password.current.value
     }
-    const requestOptions = {
-      method: "POST",
-      headers: {"content-Type": "application/json"},
-      body: JSON.stringify(authDetail)
-    }
-    const response = await fetch("http://localhost:8000/login", requestOptions);
-    const data = await response.json();
+    const data = await Loginer(authDetail)
     data.accessToken ? navigate("/products") : toast.error(data);
-
-    if(data.accessToken){
-      sessionStorage.setItem("token", JSON.stringify(data.accessToken));
-      sessionStorage.setItem("cbid", JSON.stringify(data.user.id));
-      sessionStorage.setItem("name", JSON.stringify(data.user.name))
-      sessionStorage.setItem("email", JSON.stringify(data.user.email))
-    }
   }
 
   return (

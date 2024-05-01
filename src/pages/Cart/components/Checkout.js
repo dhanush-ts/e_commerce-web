@@ -1,9 +1,51 @@
+import { useEffect } from "react";
 import { useCart } from "../../../context";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { GetUser } from "../../../service/DataService";
 
 export const Checkout = ({setCheckout}) => {
-  const { total } = useCart();
-  const name = JSON.parse(sessionStorage.getItem("name"))
-  const email = JSON.parse(sessionStorage.getItem("email"))
+  const { clearCart, cartList, total } = useCart();
+  const navi = useNavigate();
+  const [userData,setUserData] = useState({
+    name:"",
+    email:"",
+    id :""
+  });
+
+    useEffect(() => {
+        async function user() {
+            const data = await GetUser();
+            setUserData(data);
+        };
+        user();
+    } ,[])
+
+  async function HandleSubmit(event){
+    event.preventDefault();
+    const order = {
+        cartList: cartList,
+        amount_paid : total,
+        quantity: cartList.length,
+        user: {
+            name: event.target.name.value,
+            email: userData.email,
+            id: userData.id
+        }
+    }
+    const token = JSON.parse(sessionStorage.getItem("token"));
+
+    const response = await fetch("http://localhost:8000/660/orders",{
+        method: "POST",
+        headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
+        body: JSON.stringify(order)
+    });
+    if(!response.ok){
+        throw new Error("Error occoured")
+    }
+    clearCart();
+    navi("/summary");
+}
 
   return (
     <section>
@@ -21,14 +63,14 @@ export const Checkout = ({setCheckout}) => {
                     <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                     <i className="bi bi-credit-card mr-2"></i>CARD PAYMENT
                     </h3>
-                    <form className="space-y-6" >
+                    <form onSubmit={HandleSubmit} className="space-y-6" >
                     <div>
                         <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Name:</label>
-                        <input type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white" value={name} disabled required="" />
+                        <input type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white" value={userData.name} disabled required="" />
                     </div>
                     <div>
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email:</label>
-                        <input type="text" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white" value={email} disabled required="" />
+                        <input type="text" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white" value={userData.email} disabled required="" />
                     </div>
                     <div>
                         <label htmlFor="card" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Card Number:</label>

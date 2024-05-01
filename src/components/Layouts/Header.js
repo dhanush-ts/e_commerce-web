@@ -10,7 +10,7 @@ export const Header = () => {
   const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem("darkMode")) || false);
   const [searchSection, setSearchSection] = useState(false);
   const [dropdown, setDropdown] = useState(false);
-  const token = sessionStorage.getItem("name")
+  const token = sessionStorage.getItem("cbid")
 
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
