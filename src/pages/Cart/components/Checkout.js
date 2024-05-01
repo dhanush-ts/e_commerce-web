@@ -3,8 +3,10 @@ import { useCart } from "../../../context";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CreateOrder, GetUser } from "../../../service/DataService";
+import { useTitle } from "../../../hooks/useTitle"
 
 export const Checkout = ({setCheckout}) => {
+  useTitle("Order Summary");
   const { clearCart, cartList, total } = useCart();
   const navi = useNavigate();
   const [userData,setUserData] = useState({
