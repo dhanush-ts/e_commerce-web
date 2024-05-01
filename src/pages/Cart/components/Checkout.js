@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useCart } from "../../../context";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GetUser } from "../../../service/DataService";
+import { CreateOrder, GetUser } from "../../../service/DataService";
 
 export const Checkout = ({setCheckout}) => {
   const { clearCart, cartList, total } = useCart();
@@ -33,16 +33,7 @@ export const Checkout = ({setCheckout}) => {
             id: userData.id
         }
     }
-    const token = JSON.parse(sessionStorage.getItem("token"));
-
-    const response = await fetch("http://localhost:8000/660/orders",{
-        method: "POST",
-        headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
-        body: JSON.stringify(order)
-    });
-    if(!response.ok){
-        throw new Error("Error occoured")
-    }
+    CreateOrder(order);
     clearCart();
     navi("/summary");
 }
