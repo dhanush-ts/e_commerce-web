@@ -3,6 +3,7 @@ import { HomePage, ProductsList, ProductDetail, Login, Register, CartPage } from
 import { Protected } from "./Protected";
 import { OrderSummary } from "../pages/Cart/components/OrderSummary";
 import { DashbaordPage } from "../pages/Dashboard/DashbaordPage";
+import { PagrNotFound404 } from "../pages/PagrNotFound404";
 
 export const AllRoutes = () => {
   return (
@@ -18,6 +19,7 @@ export const AllRoutes = () => {
         <Route path="summary" element={<Protected><OrderSummary /></Protected> } />
         <Route path="/dashboard" element={<Protected><DashbaordPage /></Protected> } />
         <Route path="cart" element={<Protected><CartPage /></Protected>} />
+        <Route path="*" element={<PagrNotFound404 />} />
     </Routes>
     </>
   )
