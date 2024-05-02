@@ -24,6 +24,16 @@ export const CartProvider = ({children}) => {
         })
     }
 
+    function FillCart(value){
+        dispatch({
+            type: "ALL",
+            payload: {
+                list: value.current,
+                amt: value.total_amount
+            }
+        })
+    }
+
     function removeFromCart(product){
         const updatedList = state.cartList.filter(item => item.id !== product.id);
         const updatedTotal = state.total - product.price;
@@ -48,6 +58,7 @@ export const CartProvider = ({children}) => {
     }
 
     const value = {
+        FillCart,
         cartList: state.cartList,
         total: state.total,
         addToCart,

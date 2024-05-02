@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GetUser } from "../../service/DataService";
+import { GetAllCarts, GetUser } from "../../service/DataService";
+import { useCart } from "../../context/CartContext"
 
 export const DropdownLoggedIn = ({setDropdown}) => {
+    const { cartList, clearCart, total } = useCart();
     const navigate = useNavigate();
   const [userData,setUserData] = useState({});
 
@@ -19,6 +21,48 @@ export const DropdownLoggedIn = ({setDropdown}) => {
     } ,[]);
 
     function handleLogout(){
+        async function CartUpdate() {
+            const cbid = JSON.parse(sessionStorage.getItem("cbid"));
+            const cart = {
+                id: cbid,
+                current: cartList,
+                total_amount: total
+            };
+            const token = JSON.parse(sessionStorage.getItem("token"));
+            
+            // Fetch all carts
+            const carts = await GetAllCarts();
+            
+            // Find the cart with the matching ID
+            const existingCart = carts.find(cart => cart.id === cbid);
+            
+            if (existingCart) {
+                // Update the existing cart
+                const response = await fetch(`http://localhost:8000/660/carts/${cbid}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                    body: JSON.stringify(cart)
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`Failed to update cart! Status: ${response.status}`);
+                }
+            } else {
+                // Create a new cart
+                const createResponse = await fetch(`http://localhost:8000/660/carts`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                    body: JSON.stringify(cart)
+                });
+        
+                if (!createResponse.ok) {
+                    throw new Error(`Failed to create cart! Status: ${createResponse.status}`);
+                }
+            }
+        }
+        
+        CartUpdate();
+        clearCart();
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("cbid");
         setDropdown(false);

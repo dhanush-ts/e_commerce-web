@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { Loginer } from "../service/AuthService";
 import { useTitle } from "../hooks/useTitle"
+import { GetCart } from "../service/DataService";
+import { useCart } from "../context/CartContext";
 
 export const Login = () => {
+  const { FillCart } = useCart()
   useTitle("Login");
   const navigate = useNavigate();
   const email = useRef();
@@ -17,7 +20,9 @@ export const Login = () => {
       password: password.current.value
     }
     try{
-      const data = await Loginer(authDetail)
+      const data = await Loginer(authDetail);
+      const cart = await GetCart();
+      FillCart(cart);
       data.accessToken ? navigate("/products") : toast.error(data);
     }catch(error){
       toast.error(error, {closeButton: true, position: "bottom-center"});

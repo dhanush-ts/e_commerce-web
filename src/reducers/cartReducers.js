@@ -11,8 +11,11 @@ export const cartReducer = (state, action) => {
         
         case "CLEAR_CART":
             return {...state, cartList: payload.products, total: payload.total}
-
-        default:
+        
+        case "ALL":
+            return {cartList: payload.list, total: payload.amt}
+        
+            default:
             throw new Error("No case found!");
     }
 }

@@ -2,5 +2,6 @@
     "/users*":"/600/",
     "/orders*":"/660/",
     "/products*":"/444/",
-    "/featured_products*":"/444/"
+    "/featured_products*":"/444/",
+    "/carts*":"/660/"
 }
