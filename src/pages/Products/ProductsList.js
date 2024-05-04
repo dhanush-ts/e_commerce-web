@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { useFilter } from "../../context";
 import { useLocation } from "react-router-dom";
 import { useTitle } from "../../hooks/useTitle";
-import { useFilter } from "../../context";
 import { ProductCard } from "../../components";
 import { FilterBar } from "./components/FilterBar";
 import { ProductsLists } from "../../service/ProductService";
