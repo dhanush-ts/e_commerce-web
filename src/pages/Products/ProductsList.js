@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTitle } from "../../hooks/useTitle";
 import { useFilter } from "../../context";
 import { ProductCard } from "../../components";
 import { FilterBar } from "./components/FilterBar";
 import { ProductsLists } from "../../service/ProductService";
+import { toast } from "react-toastify";
+
 
 export const ProductsList = () => {
   const { products, initialProductList } = useFilter();
@@ -14,18 +16,17 @@ export const ProductsList = () => {
   useTitle("Explore eBooks Collection");
  
 
-  const fetchProducts = useCallback(async () => {
-    try {
-      const data = await ProductsLists(searchTerm);
-      initialProductList(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [searchTerm, initialProductList]);
-  
   useEffect(() => {
+    async function fetchProducts(){
+      try{
+        const data = await ProductsLists(searchTerm);
+        initialProductList(data); 
+      } catch(error){
+        toast.error(error.message, {closeButton: true, position: "bottom-center" });
+      }
+    }
     fetchProducts();
-  }, [fetchProducts]);
+  }, [searchTerm]); //eslint-disable-line
 
   return (
     <main>
