@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTitle } from "../../hooks/useTitle";
 import { useFilter } from "../../context";
@@ -14,19 +14,18 @@ export const ProductsList = () => {
   useTitle("Explore eBooks Collection");
  
 
-  useEffect(() => {
-    async function fetchProducts(){
-      try{
-        const data = await ProductsLists(searchTerm);
-        initialProductList(data);
-      }
-      catch(error){
-        console.log(error);
-      }
-      
+  const fetchProducts = useCallback(async () => {
+    try {
+      const data = await ProductsLists(searchTerm);
+      initialProductList(data);
+    } catch (error) {
+      console.log(error);
     }
+  }, [searchTerm, initialProductList]);
+  
+  useEffect(() => {
     fetchProducts();
-  }, [searchTerm]);
+  }, [fetchProducts]);
 
   return (
     <main>
