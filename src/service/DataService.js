@@ -1,7 +1,7 @@
 export async function GetUser(){
     const token = JSON.parse(sessionStorage.getItem("token"));
     const cbid = JSON.parse(sessionStorage.getItem("cbid"));
-    const response = await fetch(`http://localhost:8000/600/users/${cbid}`,{
+    const response = await fetch(`${process.env.REACT_APP_API}/600/users/${cbid}`,{
         method:"GET",
         headers: {"Content-Type":"application/json", "Authorization": `Bearer ${token}`}
     })
@@ -15,7 +15,7 @@ export async function GetUser(){
 export async function GetUserOrders(){
     const token = JSON.parse(sessionStorage.getItem("token"));
     const cbid = JSON.parse(sessionStorage.getItem("cbid"));
-    const response = await fetch(`http://localhost:8000/660/orders?user.id=${cbid}`,{
+    const response = await fetch(`${process.env.REACT_APP_API}/660/orders?user.id=${cbid}`,{
         method: "GET",
         headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}` }
     });
@@ -29,7 +29,7 @@ export async function GetUserOrders(){
 
 export async function CreateOrder(OrderDetails){
     const token = JSON.parse(sessionStorage.getItem("token"));
-    const response = await fetch("http://localhost:8000/660/orders",{
+    const response = await fetch(`${process.env.REACT_APP_API}/660/orders`,{
         method: "POST",
         headers: {"Content-Type":"application/json","Authorization":`Bearer ${token}`},
         body: JSON.stringify(OrderDetails)
@@ -44,7 +44,7 @@ export async function CreateOrder(OrderDetails){
 export async function GetCart(){
     const token = JSON.parse(sessionStorage.getItem("token"));
     const cbid = JSON.parse(sessionStorage.getItem("cbid"));
-    const response = await fetch(`http://localhost:8000/660/carts/${cbid}`,{
+    const response = await fetch(`${process.env.REACT_APP_API}/660/carts/${cbid}`,{
         method: "GET",
         headers: {"Content-Type":"application/json","Authorization":`Bearer ${token}`}
     });
@@ -57,7 +57,7 @@ export async function GetCart(){
 
 export async function GetAllCarts(){
     const token = JSON.parse(sessionStorage.getItem("token"));
-    const response = await fetch(`http://localhost:8000/660/carts`,{
+    const response = await fetch(`${process.env.REACT_APP_API}/660/carts`,{
         method: "GET",
         headers: {"Content-Type":"application/json","Authorization":`Bearer ${token}`}
     });
